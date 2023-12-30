@@ -203,6 +203,7 @@ if __name__ == '__main__':
     ])
 
     datamodule = QM9DataModule(**vars(args))
+    # TODO: Why tf is this used here?
     model = SE3TransformerPooled(
         fiber_in=Fiber({0: datamodule.NODE_FEATURE_DIM}),
         fiber_out=Fiber({0: args.num_degrees * args.num_channels}),

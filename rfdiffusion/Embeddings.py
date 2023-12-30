@@ -23,8 +23,9 @@ class PositionalEncoding2D(nn.Module):
 
     def forward(self, x, idx):
         bins = torch.arange(self.minpos, self.maxpos, device=x.device)
+        # Sequence separations between residues i and j in batch B
         seqsep = idx[:,None,:] - idx[:,:,None] # (B, L, L)
-        #
+        # Categorize sequence separations into bins
         ib = torch.bucketize(seqsep, bins).long() # (B, L, L)
         emb = self.emb(ib) #(B, L, L, d_model)
         x = x + emb # add relative positional encoding
@@ -292,6 +293,9 @@ class Recycling(nn.Module):
         b = Ca - N
         c = C - Ca
         a = torch.cross(b, c, dim=-1)
+        # These coefficients are derived from the standard geometry of an amino 
+        # acid residue in proteins. They are used to recreate the position of 
+        # the C-beta atom when it is not available
         Cb = -0.58273431*a + 0.56802827*b - 0.54067466*c + Ca
 
         dist = rbf(torch.cdist(Cb, Cb))
