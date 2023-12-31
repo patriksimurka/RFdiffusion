@@ -230,11 +230,11 @@ class Sampler:
         model = model.eval()
         self._log.info(f'Loading checkpoint.')
         model.load_state_dict(self.ckpt['model_state_dict'], strict=True)
-        # print number of parameters
-        self._log.info(f'Number of parameters: {sum(p.numel() for p in model.parameters())}')
-        # save architecture of the model to a text file
-        with open(f'{self._conf.inference.output_prefix}_model_architecture.txt', 'w') as f:
-            f.write(str(model))
+        # # print number of parameters
+        # self._log.info(f'Number of parameters: {sum(p.numel() for p in model.parameters())}')
+        # # save architecture of the model to a text file
+        # with open(f'{self._conf.inference.output_prefix}_model_architecture.txt', 'w') as f:
+        #     f.write(str(model))
         return model
 
     def construct_contig(self, target_feats):

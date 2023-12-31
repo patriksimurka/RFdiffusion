@@ -15,4 +15,5 @@ tests/target_folds
 tests/tim_barrel_scaffold
 tests/tests_*
 
-.vscode
+outputs
+test_outputs
