@@ -38,7 +38,7 @@ class RoseTTAFoldModule(nn.Module):
         d_state = SE3_param_topk['l0_out_features']
         self.latent_emb = MSA_emb(d_msa=d_msa, d_pair=d_pair, d_state=d_state,
                 p_drop=p_drop, input_seq_onehot=input_seq_onehot) # Allowed to take onehotseq
-        self.full_emb = Extra_emb(d_msa=d_msa_full, d_init=25,
+        self.full_emb = Extra_emb(d_msa=d_msa_full, d_init=25, # DEBUG
                 p_drop=p_drop, input_seq_onehot=input_seq_onehot) # Allowed to take onehotseq
         self.templ_emb = Templ_emb(d_pair=d_pair, d_templ=d_templ, d_state=d_state,
                                    n_head=n_head_templ,
