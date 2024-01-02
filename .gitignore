@@ -17,3 +17,4 @@ tests/tests_*
 
 outputs
 test_outputs
+.vscode/settings.json

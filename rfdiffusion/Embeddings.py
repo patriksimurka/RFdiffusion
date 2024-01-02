@@ -93,6 +93,7 @@ class MSA_emb(nn.Module):
 
 class Extra_emb(nn.Module):
     # Get initial seed MSA embedding
+    # TODO: Why is d_init this size?
     def __init__(self, d_msa=256, d_init=22+1+2, p_drop=0.1, input_seq_onehot=False):
         super(Extra_emb, self).__init__()
         self.emb = nn.Linear(d_init, d_msa) # embedding for general MSA
@@ -191,6 +192,7 @@ class Templ_emb(nn.Module):
                  n_head=4, d_hidden=16, p_drop=0.25):
         super(Templ_emb, self).__init__()
         # process 2D features
+        # TODO: Why *2?
         self.emb = nn.Linear(d_t1d*2+d_t2d, d_templ)
         self.templ_stack = TemplatePairStack(n_block=n_block, d_templ=d_templ, n_head=n_head,
                                              d_hidden=d_hidden, p_drop=p_drop)
