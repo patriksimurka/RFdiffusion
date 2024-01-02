@@ -183,11 +183,11 @@ class Templ_emb(nn.Module):
     #   t1d:
     #   - tiled AA sequence (20 standard aa + gap)
     #   - confidence (1)
-    #   - contacting or note (1). NB this is added for diffusion model. Used only in complex training examples - 1 signifies that a residue in the non-diffused chain\
+    #   - contacting or note (1). NB this is added for diffusion model. Used only in complex training examples - 1 signifies that a residue in the non-diffused chain,
     #     i.e. the context, is in contact with the diffused chain.
     #
     #Added extra t1d dimension for contacting or not
-    def __init__(self, d_t1d=21+1+1, d_t2d=43+1, d_tor=30, d_pair=128, d_state=32,
+    def __init__(self, d_t1d=21+1+1, d_t2d=43+1, d_tor=30, d_pair=128, d_state=32, # TODO: Verify these in the paper
                  n_block=2, d_templ=64,
                  n_head=4, d_hidden=16, p_drop=0.25):
         super(Templ_emb, self).__init__()
