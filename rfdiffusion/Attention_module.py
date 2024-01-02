@@ -16,7 +16,7 @@ class FeedForwardLayer(nn.Module):
         self.reset_parameter()
 
     def reset_parameter(self):
-        # initialize linear layer right before ReLu: He initializer (kaiming normal)
+        # initialize linear layer right before ReLu: He initializer (kaiming normal) # TODO: Interesting
         nn.init.kaiming_normal_(self.linear1.weight, nonlinearity='relu')
         nn.init.zeros_(self.linear1.bias)
 
@@ -331,7 +331,7 @@ class MSAColGlobalAttention(nn.Module):
         out = self.to_out(out)
         return out
 
-# Instead of triangle attention, use Tied axail attention with bias from coordinates..?
+# Instead of triangle attention, use Tied axial attention with bias from coordinates..?
 class BiasedAxialAttention(nn.Module):
     def __init__(self, d_pair, d_bias, n_head, d_hidden, p_drop=0.1, is_row=True):
         super(BiasedAxialAttention, self).__init__()
@@ -367,7 +367,7 @@ class BiasedAxialAttention(nn.Module):
         nn.init.zeros_(self.to_g.weight)
         nn.init.ones_(self.to_g.bias)
 
-        # to_out: right before residual connection: zero initialize -- to make it sure residual operation is same to the Identity at the begining
+        # to_out: right before residual connection: zero initialize -- to make it sure residual operation is same to the Identity at the begining #TODO: Interesting, look closer into this
         nn.init.zeros_(self.to_out.weight)
         nn.init.zeros_(self.to_out.bias)
 
