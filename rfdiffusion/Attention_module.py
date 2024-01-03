@@ -156,9 +156,9 @@ class SequenceWeight(nn.Module):
     def forward(self, msa):
         B, N, L = msa.shape[:3]
        
-        tar_seq = msa[:,0]
+        tar_seq = msa[:,0] # This is selecting the query sequence
         
-        q = self.to_query(tar_seq).view(B, 1, L, self.h, self.dim)
+        q = self.to_query(tar_seq).view(B, 1, L, self.h, self.dim) # Simultaneously computing attention for all the heads
         k = self.to_key(msa).view(B, N, L, self.h, self.dim)
         
         q = q * self.scale
@@ -326,7 +326,7 @@ class MSAColGlobalAttention(nn.Module):
         attn = F.softmax(attn, dim=-1)
         #
         out = einsum('bihk,bkid->bihd', attn, value).reshape(B, 1, L, -1) # (B, 1, L, h*dim)
-        out = gate * out # (B, N, L, h*dim)
+        out = gate * out # (B, 1, L, h*dim) TODO: check if this is indeed correct
         #
         out = self.to_out(out)
         return out

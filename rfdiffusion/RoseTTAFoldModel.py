@@ -59,11 +59,11 @@ class RoseTTAFoldModule(nn.Module):
                                             SE3_param_topk=SE3_param_topk,
                                             p_drop=p_drop)
         ##
-        self.c6d_pred = DistanceNetwork(d_pair, p_drop=p_drop)
-        self.aa_pred = MaskedTokenNetwork(d_msa)
-        self.lddt_pred = LDDTNetwork(d_state)
+        self.c6d_pred = DistanceNetwork(d_pair, p_drop=p_drop) # Auxiliary head predicting distograms and orientations
+        self.aa_pred = MaskedTokenNetwork(d_msa) # Auxiliary head predicting masked tokens (amino acids)
+        self.lddt_pred = LDDTNetwork(d_state) # Auxiliary head predicting LDDT scores
        
-        self.exp_pred = ExpResolvedNetwork(d_msa, d_state)
+        self.exp_pred = ExpResolvedNetwork(d_msa, d_state) # Auxiliary head predicting pBind: the probability that two chains are binding TODO: Verify
 
     def forward(self, msa_latent, msa_full, seq, xyz, idx, t,
                 t1d=None, t2d=None, xyz_t=None, alpha_t=None,

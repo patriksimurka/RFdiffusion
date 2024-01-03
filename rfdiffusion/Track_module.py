@@ -73,7 +73,7 @@ class PairStr2Pair(nn.Module):
     def __init__(self, d_pair=128, n_head=4, d_hidden=32, d_rbf=36, p_drop=0.15):
         super(PairStr2Pair, self).__init__()
         
-        # TODO: What is rbf? Radial basis function?
+        # Radial basis functions are used to extract 3D structure information from xyz coordinates into pair features
         self.emb_rbf = nn.Linear(d_rbf, d_hidden)
         self.proj_rbf = nn.Linear(d_hidden, d_pair)
 

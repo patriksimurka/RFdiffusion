@@ -5,8 +5,8 @@ class DistanceNetwork(nn.Module):
     def __init__(self, n_feat, p_drop=0.1):
         super(DistanceNetwork, self).__init__()
         #
-        self.proj_symm = nn.Linear(n_feat, 37*2)
-        self.proj_asymm = nn.Linear(n_feat, 37+19)
+        self.proj_symm = nn.Linear(n_feat, 37*2) 
+        self.proj_asymm = nn.Linear(n_feat, 37+19) # 19 for the angle term, 37 for the other terms
     
         self.reset_parameter()
     
@@ -34,7 +34,7 @@ class DistanceNetwork(nn.Module):
         return logits_dist, logits_omega, logits_theta, logits_phi
 
 class MaskedTokenNetwork(nn.Module):
-    def __init__(self, n_feat):
+    def __init__(self, n_feat): # nit: should be d_feat
         super(MaskedTokenNetwork, self).__init__()
         self.proj = nn.Linear(n_feat, 21)
         
