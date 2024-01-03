@@ -195,7 +195,7 @@ class Templ_emb(nn.Module):
         # TODO: Why *2?
         self.emb = nn.Linear(d_t1d*2+d_t2d, d_templ)
         self.templ_stack = TemplatePairStack(n_block=n_block, d_templ=d_templ, n_head=n_head,
-                                             d_hidden=d_hidden, p_drop=p_drop)
+                                             d_hidden=d_hidden, p_drop=p_drop) # TODO: Why is this initialized here?
 
         self.attn = Attention(d_pair, d_templ, n_head, d_hidden, d_pair)
 
@@ -269,7 +269,7 @@ class Templ_emb(nn.Module):
 class Recycling(nn.Module):
     def __init__(self, d_msa=256, d_pair=128, d_state=32):
         super(Recycling, self).__init__()
-        self.proj_dist = nn.Linear(36+d_state*2, d_pair)
+        self.proj_dist = nn.Linear(36+d_state*2, d_pair) # Distance embedding is concatenated with state embedding of the two residues
         self.norm_state = nn.LayerNorm(d_state)
         self.norm_pair = nn.LayerNorm(d_pair)
         self.norm_msa = nn.LayerNorm(d_msa)
