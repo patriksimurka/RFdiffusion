@@ -10,7 +10,7 @@
             "request": "launch",
             "python": "/home/conda/patriksimurka/rfd/bin/python3",
             "program": "${workspaceFolder}/scripts/run_inference.py",
-            "args": ["contigmap.contigs=[150-150]", "inference.output_prefix=test_outputs/test", "inference.num_designs=1"]
+            "args": ["contigmap.contigs=[150-150]", "inference.output_prefix=test_outputs/test", "inference.num_designs=1", "inference.design_startnum=-1"]
         }
     ]
 }
