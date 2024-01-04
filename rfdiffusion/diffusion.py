@@ -223,7 +223,7 @@ class IGSO3:
                 f"_max_sigma_{replace_period(self.max_sigma)}_schedule_{self.schedule}",
             )
         else:
-            raise ValueError(f"Unrecognize schedule {self.schedule}")
+            raise ValueError(f"Unrecognized schedule {self.schedule}")
 
         if not os.path.isdir(self.cache_dir):
             os.makedirs(self.cache_dir)
@@ -673,7 +673,7 @@ class Diffuser:
             torch.from_numpy(diffused_frame_crds) + cum_delta[:, :, None, :]
         ).transpose(
             0, 1
-        )  # [n,L,3,3]
+        )  # [N,L,3,3]
         # diffused_BB  = torch.from_numpy(diffused_frame_crds).transpose(0,1)
 
         # diffused_BB is [t_steps,L,3,3]
