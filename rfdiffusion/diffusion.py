@@ -572,10 +572,10 @@ class Diffuser:
         self.T = T
         self.b_0 = b_0
         self.b_T = b_T
-        self.min_sigma = min_sigma
+        self.min_sigma = min_sigma # These two define the minimum and maximum values for the standard deviation of the Gaussian noise that is added during the diffusion process.
         self.max_sigma = max_sigma
-        self.crd_scale = crd_scale
-        self.var_scale = var_scale
+        self.crd_scale = crd_scale # Scaling coordinates during the diffusion process
+        self.var_scale = var_scale # Scaling variance during the diffusion process
         self.cache_dir = cache_dir
 
         # get backbone frame diffuser
@@ -584,7 +584,7 @@ class Diffuser:
             min_sigma=self.min_sigma,
             max_sigma=self.max_sigma,
             schedule=so3_schedule_type,
-            min_b=min_b,
+            min_b=min_b, # Beta schedule is a sequence of noise levels used at each step of the diffusion process. It's crucial for controlling the trade-off between the quality and diversity of the generated samples.
             max_b=max_b,
             cache_dir=self.cache_dir,
             L=truncation_level,
