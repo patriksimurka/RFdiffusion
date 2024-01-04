@@ -623,7 +623,7 @@ def process_target(pdb_path, parse_hetatom=False, center=True):
     atom_mask = torch.from_numpy(target_struct["mask"])
     seq_len = len(xyz)
 
-    # Make 27 atom representation
+    # Make 27 atom representation (27 is the max number of atoms in a residue)
     xyz_27 = torch.full((seq_len, 27, 3), np.nan).float()
     xyz_27[:, :14, :] = xyz[:, :14, :]
 

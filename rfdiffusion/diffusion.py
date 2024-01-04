@@ -677,7 +677,7 @@ class Diffuser:
         # diffused_BB  = torch.from_numpy(diffused_frame_crds).transpose(0,1)
 
         # diffused_BB is [t_steps,L,3,3]
-        t_steps, L = diffused_BB.shape[:2]
+        t_steps, L = diffused_BB.shape[:2] # Why are we taking this from here?
 
         diffused_fa = torch.zeros(t_steps, L, 27, 3)
         diffused_fa[:, :, :3, :] = diffused_BB
