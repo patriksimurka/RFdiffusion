@@ -171,7 +171,7 @@ class IGSO3:
         Args:
             T: total number of time steps
             min_sigma: smallest allowed scale parameter, should be at least 0.01 to maintain numerical stability.  Recommended value is 0.05.
-            max_sigma: for exponential schedule, the largest scale parameter. Ignored for recommeded linear schedule
+            max_sigma: for exponential schedule, the largest scale parameter. Ignored for recommended linear schedule
             min_b: lower value of beta in Ho schedule analogue
             max_b: upper value of beta in Ho schedule analogue
             num_omega: discretization level in the angles across [0, pi]
@@ -284,7 +284,7 @@ class IGSO3:
                 + (1 / 2) * (t**2) * (self.max_b - self.min_b)
             )
         else:
-            raise ValueError(f"Unrecognize schedule {self.schedule}")
+            raise ValueError(f"Unrecognized schedule {self.schedule}")
 
     def g(self, t):
         """
