@@ -722,7 +722,7 @@ class SelfConditioning(Sampler):
 
     def symmetrise_prev_pred(self, px0, seq_in, alpha):
         """
-        Method for symmetrising px0 output for self-conditioning
+        Method for symmetrizing px0 output for self-conditioning
         """
         _,px0_aa = self.allatom(torch.argmax(seq_in, dim=-1), px0, alpha)
         px0_sym,_ = self.symmetry.apply_symmetry(px0_aa.to('cpu').squeeze()[:,:14], torch.argmax(seq_in, dim=-1).squeeze().to('cpu'))

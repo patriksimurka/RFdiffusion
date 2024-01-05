@@ -67,7 +67,7 @@ class MSA_emb(nn.Module):
         #   - msa: Initial MSA embedding (B, N, L, d_msa)
         #   - pair: Initial Pair embedding (B, L, L, d_pair)
 
-        N = msa.shape[1] # number of sequenes in MSA
+        N = msa.shape[1] # number of sequences in MSA
 
         # msa embedding
         msa = self.emb(msa) # (B, N, L, d_model) # MSA embedding
@@ -115,7 +115,7 @@ class Extra_emb(nn.Module):
         #   - idx: Residue index
         # Outputs:
         #   - msa: Initial MSA embedding (B, N, L, d_msa)
-        N = msa.shape[1] # number of sequenes in MSA
+        N = msa.shape[1] # number of sequences in MSA
         msa = self.emb(msa) # (B, N, L, d_model) # MSA embedding
 
         # Sergey's one hot trick
@@ -228,7 +228,7 @@ class Templ_emb(nn.Module):
         left = t1d.unsqueeze(3).expand(-1,-1,-1,L,-1)
         right = t1d.unsqueeze(2).expand(-1,-1,L,-1,-1)
         #
-        templ = torch.cat((t2d, left, right), -1) # (B, T, L, L, 90)
+        templ = torch.cat((t2d, left, right), -1) # (B, T, L, L, 90) 88?
         templ = self.emb(templ) # Template templures (B, T, L, L, d_templ)
         # process each template features
         xyz_t = xyz_t.reshape(B*T, L, -1, 3)
