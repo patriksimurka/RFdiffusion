@@ -83,6 +83,24 @@ class Dropout(nn.Module):
 
 def rbf(D):
     # Distance radial basis function
+
+    # The RBF transformation makes the representation of distances more 
+    # expressive by capturing different levels of proximity. Instead of 
+    # representing each distance by a single value, it represents each distance 
+    # by a set of RBF values. Each RBF value measures the proximity of the 
+    # distance to a different center. This allows the model to distinguish 
+    # between different ranges of distances and to capture more complex patterns 
+    # in the data.
+
+    # For example, consider a simple case where the distances are either close 
+    # (e.g., 1 unit), medium (e.g., 5 units), or far (e.g., 10 units). A model 
+    # using the raw distances might struggle to distinguish between these three 
+    # cases because the differences between the distances are linear. But if we 
+    # apply an RBF transformation with centers at 1, 5, and 10, the transformed 
+    # distances will have high RBF values at the center that corresponds to 
+    # their category (close, medium, or far) and low RBF values at the other 
+    # centers. This makes it easier for the model to distinguish between the 
+    # three cases.
     D_min, D_max, D_count = 0., 20., 36
     D_mu = torch.linspace(D_min, D_max, D_count).to(D.device)
     D_mu = D_mu[None,:]

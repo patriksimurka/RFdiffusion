@@ -299,6 +299,26 @@ class Recycling(nn.Module):
         # These coefficients are derived from the standard geometry of an amino 
         # acid residue in proteins. They are used to recreate the position of 
         # the C-beta atom when it is not available
+
+        # The distance is calculated from the Cb (C-beta) atoms only because 
+        # these atoms are often used as a representative point for the side 
+        # chain of an amino acid in protein structures.
+
+        # The C-beta atom is the first atom in the side chain of an amino acid 
+        # (except for Glycine which doesn't have a C-beta atom). It is connected 
+        # to the alpha carbon (C-alpha) which is the central atom of an amino 
+        # acid, and it's the point where the side chain diverges from the main 
+        # backbone of the protein structure.
+
+        # Therefore, the distances between C-beta atoms can provide a good 
+        # approximation of the distances between different side chains of the 
+        # amino acids in the protein, which is important for understanding the 
+        # 3D structure and interactions within the protein.
+
+        # The other atoms (N, Ca, C) are part of the main backbone of the 
+        # protein structure, and their positions are more conserved. The 
+        # distances between these atoms would not provide as much information 
+        # about the overall 3D structure and interactions within the protein.
         Cb = -0.58273431*a + 0.56802827*b - 0.54067466*c + Ca
 
         dist = rbf(torch.cdist(Cb, Cb))
