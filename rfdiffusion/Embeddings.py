@@ -228,7 +228,7 @@ class Templ_emb(nn.Module):
         left = t1d.unsqueeze(3).expand(-1,-1,-1,L,-1)
         right = t1d.unsqueeze(2).expand(-1,-1,L,-1,-1)
         #
-        templ = torch.cat((t2d, left, right), -1) # (B, T, L, L, 90) 88?
+        templ = torch.cat((t2d, left, right), -1) # (B, T, L, L, 88)
         templ = self.emb(templ) # Template templures (B, T, L, L, d_templ)
         # process each template features
         xyz_t = xyz_t.reshape(B*T, L, -1, 3)
