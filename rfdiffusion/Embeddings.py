@@ -236,7 +236,7 @@ class Templ_emb(nn.Module):
         templ = self.templ_stack(templ, rbf_feat, use_checkpoint=use_checkpoint) # (B, T, L,L, d_templ)
 
         # Prepare 1D template torsion angle features
-        t1d = torch.cat((t1d, alpha_t), dim=-1) # (B, T, L, 23+30)
+        t1d = torch.cat((t1d, alpha_t), dim=-1) # (B, T, L, 22+30)
 
         # process each template features
         t1d = self.proj_t1d(F.relu_(self.emb_t1d(t1d)))
