@@ -135,7 +135,10 @@ class TemplatePairStack(nn.Module):
     def forward(self, templ, rbf_feat, use_checkpoint=False):
         B, T, L = templ.shape[:3]
         templ = templ.reshape(B*T, L, L, -1)
-
+        
+        # Multiple blocks of PairStr2Pair "stacked" on top of each other, which 
+        # is basically (biaxial + tied) attention with a feedforward layer.
+        # Think of it as the number of blocks within a transformer.
         for i_block in range(self.n_block):
             if use_checkpoint:
                 templ = checkpoint.checkpoint(create_custom_forward(self.block[i_block]), templ, rbf_feat)

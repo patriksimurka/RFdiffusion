@@ -511,7 +511,14 @@ class Sampler:
         alpha, _, alpha_mask, _ = util.get_torsions(xyz_t.reshape(-1, L, 27, 3), seq_tmp, TOR_INDICES, TOR_CAN_FLIP, REF_ANGLES)
         alpha_mask = torch.logical_and(alpha_mask, ~torch.isnan(alpha[...,0]))
         alpha[torch.isnan(alpha)] = 0.0
+        # 10 types of torsion angles (omega, phi, psi, chi1, chi2, chi3, chi4, 
+        # CB bend, CB twist, CG bend) and each angle is represented by 2 values
+        # (sin and cos)
         alpha = alpha.reshape(1,-1,L,10,2)
+        # The alpha_mask tensor is a binary mask indicating the presence of a 
+        # torsion angle. It's reshaped to (1,-1,L,10,1) because it contains 10 
+        # types of torsion angles for each residue, and each angle is 
+        # represented by a single binary value.
         alpha_mask = alpha_mask.reshape(1,-1,L,10,1)
         alpha_t = torch.cat((alpha, alpha_mask), dim=-1).reshape(1, -1, L, 30)
 

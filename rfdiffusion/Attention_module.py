@@ -65,6 +65,8 @@ class Attention(nn.Module):
         value = self.to_v(value).reshape(B, K, self.h, self.dim)
         #
         query = query * self.scaling
+        # For each batch (b) and head (h) we want attention scores between
+        # query (q) and key (k).
         attn = einsum('bqhd,bkhd->bhqk', query, key)
         attn = F.softmax(attn, dim=-1)
         #
@@ -375,8 +377,10 @@ class BiasedAxialAttention(nn.Module):
         # pair: (B, L, L, d_pair)
         B, L = pair.shape[:2]
         
+        # Trick to make the attention work on the rows instead of the columns
+        # without having to change the code for the attention module
         if self.is_row:
-            pair = pair.permute(0,2,1,3)
+            pair = pair.permute(0,2,1,3) 
             bias = bias.permute(0,2,1,3)
 
         pair = self.norm_pair(pair)
@@ -390,15 +394,28 @@ class BiasedAxialAttention(nn.Module):
         
         query = query * self.scaling
         key = key / math.sqrt(L) # normalize for tied attention
-        attn = einsum('bnihk,bnjhk->bijh', query, key) # tied attention
+        # tied attention 
+        # HUMAN INTERPRETATION: For each batch (b in the resulting einsum), we 
+        # want to compute the relationship (attention) between i and j (ij in 
+        # the resulting einsum), but we want to do this for each attention head 
+        # independently (hence the h in the resulting einsum). N is missing in
+        # the resulting einsum, which is interpreted as summing over that
+        # dimension. What that accomplishes in practice is that we are
+        # computing the relationship between i and j for each attention head
+        # independently, but we are doing it for all the N pairs of i and j
+        # simultaneously, creating only a single output matrix (attention map).
+        attn = einsum('bnihk,bnjhk->bijh', query, key) 
         attn = attn + bias # apply bias
-        attn = F.softmax(attn, dim=-2) # (B, L, L, h)
+        attn = F.softmax(attn, dim=-2) # (B, L, L, h) TODO: Revisiting the softmax
         
+        # For each batch (b) and head (h), we want to extract from value the 
+        # latent information (d) for each residue pair (ik) weighted by the
+        # corresponding attention (ij). This is done by the einsum below.
         out = einsum('bijh,bkjhd->bikhd', attn, value).reshape(B, L, L, -1)
         out = gate * out
         
         out = self.to_out(out)
         if self.is_row:
-            out = out.permute(0,2,1,3)
+            out = out.permute(0,2,1,3) # Permute back to original shape
         return out
 
