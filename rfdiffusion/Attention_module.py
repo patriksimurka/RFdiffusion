@@ -70,7 +70,29 @@ class Attention(nn.Module):
         # query (q) and key (k).
         attn = einsum('bqhd,bkhd->bhqk', query, key)
         attn = F.softmax(attn, dim=-1)
+        # Now we have an attention map -- for each batch and head, we have an 
+        # indication of how much a certain query vector should pay attention to 
+        # all the keys (qk). In the value variable, for each head and batch,
+        # we have the latent information (d) indexed by the keys (k). So what
+        # this operation does is it extracts the latent information for each
+        # query (q) weighted by its attention scores for all the keys (k). It
+        # does this by aggregating over the keys (k) of the value variable.
         #
+        # This is how the einsum would look using classic for loops if that 
+        # helps (although my opinion is that it is more confusing than the 
+        # einsum, once you really understand einsum):
+        #
+        # ans = torch.empty(B, Q, self.h, self.dim)
+        # for b in range(B):
+        #     for q in range(Q):
+        #         for h in range(self.h):
+        #             for d in range(self.dim):
+        #                 total = 0
+        #                 for k in range(K):
+        #                     total += attn[b, h, q, k] * value[b, k, h, d]
+        #                 ans[b, q, h, d] = total
+        #             
+        #           
         out = einsum('bhqk,bkhd->bqhd', attn, value)
         out = out.reshape(B, Q, self.h*self.dim)
         #
