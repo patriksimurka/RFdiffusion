@@ -52,7 +52,8 @@ class Attention(nn.Module):
         nn.init.xavier_uniform_(self.to_k.weight)
         nn.init.xavier_uniform_(self.to_v.weight)
 
-        # to_out: right before residual connection: zero initialize -- to make it sure residual operation is same to the Identity at the begining
+        # to_out: right before residual connection: zero initialize -- to make 
+        # it sure residual operation is same to the Identity at the beginning
         nn.init.zeros_(self.to_out.weight)
         nn.init.zeros_(self.to_out.bias)
 
