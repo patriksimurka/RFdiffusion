@@ -400,7 +400,7 @@ class IterativeSimulator(nn.Module):
 
         B, L = pair.shape[:2]
 
-        if motif_mask is None:
+        if motif_mask is None: # TODO: Can this ever happen?
             motif_mask = torch.zeros(L).bool()
 
         R_in = torch.eye(3, device=xyz_in.device).reshape(1,1,3,3).expand(B, L, -1, -1)

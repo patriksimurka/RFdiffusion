@@ -331,7 +331,7 @@ class Sampler:
             xyz_mapped=xyz_27
             atom_mask_mapped = mask_27
         else:
-            # Fully diffusing from points initialised at the origin
+            # Fully diffusing from points initialized at the origin
             # adjust size of input xt according to residue map
             xyz_mapped = torch.full((1,1,L_mapped,27,3), np.nan)
             xyz_mapped[:, :, contig_map.hal_idx0, ...] = xyz_27[contig_map.ref_idx0,...]
@@ -422,7 +422,9 @@ class Sampler:
 
             msa_full (1,1,L,25)
         
-            xyz_t (L,14,3) template crds (diffused) 
+            xyz_t (L,14,3) template coordinates (diffused)
+            4 backbone atoms (N, CA, C, O), the side-chain centroid, plus up to 
+            9 side-chain chi angles TODO: double-check
 
             t1d (1,L,28) this is the t1d before tacking on the chi angles:
                 - seq + unknown/mask (21)
@@ -446,6 +448,7 @@ class Sampler:
         ### msa_masked ###
         ##################
         msa_masked = torch.zeros((1,1,L,48))
+        # Align the query sequence to the target sequence
         msa_masked[:,:,:,:22] = seq[None, None]
         msa_masked[:,:,:,22:44] = seq[None, None]
         msa_masked[:,:,0,46] = 1.0
