@@ -223,7 +223,7 @@ class Templ_emb(nn.Module):
 
     def forward(self, t1d, t2d, alpha_t, xyz_t, pair, state, use_checkpoint=False):
         # Input
-        #   - t1d: 1D template info (B, T, L, 23)
+        #   - t1d: 1D template info (B, T, L, 22)
         #   - t2d: 2D template info (B, T, L, L, 44)
         B, T, L, _ = t1d.shape
 
