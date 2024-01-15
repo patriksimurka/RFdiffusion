@@ -138,8 +138,8 @@ def xyz_to_t2d(xyz_t, params=PARAMS):
 
     Returns
     -------
-    t2d : pytorch tensor of shape [batch,nres,nres,37+6+3]
-          stores stacked dist,omega,theta,phi 2D maps 
+    t2d : pytorch tensor of shape [batch,nres,nres,37+6+1]
+          stores stacked dist,omega,theta,phi 2D maps + mask
     """
     B, T, L = xyz_t.shape[:3]
     c6d, mask = xyz_to_c6d(xyz_t[:,:,:,:3].view(B*T,L,3,3), params=params)
