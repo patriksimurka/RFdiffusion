@@ -232,14 +232,19 @@ class Templ_emb(nn.Module):
         right = t1d.unsqueeze(2).expand(-1,-1,L,-1,-1)
         #
         templ = torch.cat((t2d, left, right), -1) # (B, T, L, L, 88)
-        templ = self.emb(templ) # Template templures (B, T, L, L, d_templ)
+        templ = self.emb(templ) # Template features (B, T, L, L, d_templ)
         # process each template features
         xyz_t = xyz_t.reshape(B*T, L, -1, 3)
+        # extract radial basis function (RBF) features from the 3D template
         rbf_feat = rbf(torch.cdist(xyz_t[:,:,1], xyz_t[:,:,1]))
+        # Combine the RBF features extracted from the 3D template with the
+        # template features extracted from the 2D template
         templ = self.templ_stack(templ, rbf_feat, use_checkpoint=use_checkpoint) # (B, T, L,L, d_templ)
 
         # Prepare 1D template torsion angle features
-        t1d = torch.cat((t1d, alpha_t), dim=-1) # (B, T, L, 22+30)
+        # (B, T, L, 22+30) - refer to Sampler._preprocess to understand the
+        # dimensions.
+        t1d = torch.cat((t1d, alpha_t), dim=-1) 
 
         # process each template features
         t1d = self.proj_t1d(F.relu_(self.emb_t1d(t1d)))

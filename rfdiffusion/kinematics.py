@@ -21,7 +21,7 @@ def get_pair_dist(a, b):
     Returns
     -------
     dist : pytorch tensor of shape [batch,nres,nres]
-           stores paitwise distances between atoms in a and b
+           stores pairwise distances between atoms in a and b
     """
 
     dist = torch.cdist(a, b, p=2)
@@ -145,11 +145,11 @@ def xyz_to_t2d(xyz_t, params=PARAMS):
     c6d, mask = xyz_to_c6d(xyz_t[:,:,:,:3].view(B*T,L,3,3), params=params)
     c6d = c6d.view(B, T, L, L, 4)
     mask = mask.view(B, T, L, L, 1)
-    #
-    # dist to one-hot encoded
+    # dist to one-hot encoded (36 bins + 1 bin for distances falling outside the 
+    # bins)
     dist = dist_to_onehot(c6d[...,0], params)
+    # orientations of the three angles in terms of sin and cos (6 channels)
     orien = torch.cat((torch.sin(c6d[...,1:]), torch.cos(c6d[...,1:])), dim=-1)*mask # (B, T, L, L, 6)
-    #
     mask = ~torch.isnan(c6d[:,:,:,:,0]) # (B, T, L, L)
     t2d = torch.cat((dist, orien, mask.unsqueeze(-1)), dim=-1)
     t2d[torch.isnan(t2d)] = 0.0
@@ -210,6 +210,7 @@ def dist_to_onehot(dist, params=PARAMS):
     dstep = (params['DMAX'] - params['DMIN']) / params['DBINS']
     dbins = torch.linspace(params['DMIN']+dstep, params['DMAX'], params['DBINS'],dtype=dist.dtype,device=dist.device)
     db = torch.bucketize(dist.contiguous(),dbins).long()
+    # +1 to account for distances falling outside the bins
     dist = torch.nn.functional.one_hot(db, num_classes=params['DBINS']+1).float()
     return dist
 
