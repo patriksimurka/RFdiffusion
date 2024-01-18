@@ -8,7 +8,7 @@
             "name": "Python: Run Inference",
             "type": "python",
             "request": "launch",
-            "python": "/home/conda/patriksimurka/rfd/bin/python3",
+            "python": "/home/patriksimurka/miniconda3/envs/SE3nv-cuda116/bin/python3", // TODO: Make this general
             "program": "${workspaceFolder}/scripts/run_inference.py",
             "args": ["contigmap.contigs=[150-150]", "inference.output_prefix=test_outputs/test", "inference.num_designs=1", "inference.design_startnum=-1"]
         }
