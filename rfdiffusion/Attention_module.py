@@ -220,11 +220,11 @@ class MSARowAttentionWithBias(nn.Module):
         # bias: normal distribution
         self.to_b = init_lecun_normal(self.to_b)
 
-        # gating: zero weights, one biases (mostly open gate at the begining)
+        # gating: zero weights, one biases (mostly open gate at the beginning)
         nn.init.zeros_(self.to_g.weight)
         nn.init.ones_(self.to_g.bias)
 
-        # to_out: right before residual connection: zero initialize -- to make it sure residual operation is same to the Identity at the begining
+        # to_out: right before residual connection: zero initialize -- to make it sure residual operation is same to the Identity at the beginning
         nn.init.zeros_(self.to_out.weight)
         nn.init.zeros_(self.to_out.bias)
 

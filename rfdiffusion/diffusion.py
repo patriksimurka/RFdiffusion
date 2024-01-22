@@ -578,7 +578,7 @@ class Diffuser:
         self.var_scale = var_scale # Scaling variance during the diffusion process
         self.cache_dir = cache_dir
 
-        # get backbone frame diffuser
+        # get backbone frame rotation diffuser
         self.so3_diffuser = IGSO3(
             T=self.T,
             min_sigma=self.min_sigma,
@@ -590,7 +590,7 @@ class Diffuser:
             L=truncation_level,
         )
 
-        # get backbone translation diffuser
+        # get backbone frame translation diffuser
         self.eucl_diffuser = EuclideanDiffuser(
             self.T, b_0, b_T, schedule_type=schedule_type, **schedule_kwargs
         )
